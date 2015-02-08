@@ -7,7 +7,7 @@ Tested up to: 4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-If only there was a consistent emoji experience for WordPress.
+If only there was a consistent emoji experience for WordPress. That would be 😎.
 
 = Contributing =
 
