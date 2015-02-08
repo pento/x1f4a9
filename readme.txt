@@ -9,7 +9,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 If only there was a consistent emoji experience for WordPress. That would be 😎👍.
 
-= Contributing =
+== Contributing ==
 
 Development of this plugin is done on [Github](https://github.com/pento/x1f4a9). Pull requests are welcome.
 
