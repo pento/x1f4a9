@@ -74,6 +74,11 @@ class Emoji {
 			if ( preg_match_all( $regex, $content, $matches ) ) {
 				if ( ! empty( $matches[1] ) ) {
 					foreach( $matches[1] as $emoji ) {
+						/*
+						 * UTF-32's hex encoding is the same as HTML's hex encoding.
+						 * So, by converting the emoji from UTF-8 to UTF-32, we magically
+						 * get the correct hex encoding.
+						 */
 						$unpacked = unpack( 'H*', mb_convert_encoding( $emoji, 'UTF-32', 'UTF-8' ) );
 						if ( isset( $unpacked[1] ) ) {
 							$entity = '&#x' . trim( $unpacked[1], '0' ) . ';';
