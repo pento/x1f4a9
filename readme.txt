@@ -15,6 +15,11 @@ Development of this plugin is done on [Github](https://github.com/pento/x1f4a9).
 
 == Changelog ==
 
+= 0.2 =
+
+* Add emoji encoding for non-utf8mb4 character sets
+* Replace WordPress' existing smilies with shiny new ones
+
 = 0.1 =
 
 * Initial version, based on WordPress.com's emoji implementation
