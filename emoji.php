@@ -99,7 +99,7 @@ class Emoji {
 
 		switch ( $img ) {
 			case 'icon_mrgreen.gif':
-				return plugins_url( 'smileys/mrgreen.svg', __FILE__ );
+				return plugins_url( 'smileys/mrgreen.png', __FILE__ );
 			case 'icon_neutral.gif':
 				return $cdn_url . '1f610.png';
 			case 'icon_twisted.gif':
@@ -109,7 +109,7 @@ class Emoji {
 			case 'icon_eek.gif':
 				return $cdn_url . '1f62f.png';
 			case 'icon_smile.gif':
-				return plugins_url( 'smileys/simple-smile.svg', __FILE__ );
+				return plugins_url( 'smileys/simple-smile.png', __FILE__ );
 			case 'icon_confused.gif':
 				return $cdn_url . '1f62f.png';
 			case 'icon_cool.gif':
@@ -125,7 +125,7 @@ class Emoji {
 			case 'icon_razz.gif':
 				return $cdn_url . '1f61b.png';
 			case 'icon_rolleyes.gif':
-				return plugins_url( 'smileys/rolleyes.svg', __FILE__ );
+				return plugins_url( 'smileys/rolleyes.png', __FILE__ );
 			case 'icon_wink.gif':
 				return $cdn_url . '1f609.png';
 			case 'icon_cry.gif':
@@ -139,9 +139,9 @@ class Emoji {
 			case 'icon_sad.gif':
 				return $cdn_url . '1f626.png';
 			case 'icon_exclaim.gif':
-				return plugins_url( 'smileys/exclamation.svg', __FILE__ );
+				return plugins_url( 'smileys/exclamation.png', __FILE__ );
 			case 'icon_question.gif':
-				return plugins_url( 'smileys/question.svg', __FILE__ );
+				return plugins_url( 'smileys/question.png', __FILE__ );
 			default:
 				return $url;
 		}
