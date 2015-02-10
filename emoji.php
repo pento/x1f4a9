@@ -20,9 +20,6 @@ class Emoji {
 		add_action( 'wp_insert_post_data', array( __CLASS__, 'filter_post_fields' ), 10, 1 );
 
 		add_filter( 'smilies_src', array( __CLASS__, 'filter_smileys' ), 10, 2 );
-
-		// Has to happen after smilies_init(), which triggers at init:5
-		add_action( 'init', array( __CLASS__, 'bonus_smileys' ), 6 );
 	}
 
 	public static function add_mce_plugin( $plugins ) {
@@ -145,62 +142,9 @@ class Emoji {
 				return plugins_url( 'smileys/exclamation.svg', __FILE__ );
 			case 'icon_question.gif':
 				return plugins_url( 'smileys/question.svg', __FILE__ );
-
-			// Bonus smilies!
-			case 'burrito':
-				return plugins_url( 'smileys/burrito.svg', __FILE__ );
-			case 'wordpress':
-				return plugins_url( 'smileys/wordpress.svg', __FILE__ );
-			case 'mindblown':
-				return plugins_url( 'smileys/o_O.svg', __FILE__ );
-			case 'martini':
-				return $cdn_url . '1f378.png';
-			case 'whiterussian':
-				return plugins_url( 'smileys/white-russian.svg', __FILE__ );
-			case 'star':
-				return $cdn_url . '2b50.png';
-			case 'developer':
-				return plugins_url( 'smileys/developer.svg', __FILE__ );
-			case 'bear':
-				return $cdn_url . '1f43b.png';
-			case 'blush':
-				return plugins_url( 'smileys/blush.svg', __FILE__ );
-			case 'kitten':
-				return $cdn_url . '1f431.png';
-			case 'facepalm':
-				return plugins_url( 'smileys/facepalm.svg', __FILE__ );
-
 			default:
 				return $url;
 		}
-	}
-
-	public static function bonus_smileys() {
-		global $wpsmiliestrans;
-
-		$bonus_smileys = array(
-	        ':burrito:' => 'burrito',
-	              '(w)' => 'wordpress',
-	              '(W)' => 'wordpress',
-	              'O_o' => 'mindblown',
-	              'o_O' => 'mindblown',
-	              '>-I' => 'martini',
-	           '&gt;-I' => 'martini',
-	              '|_|' => 'whiterussian',
-	           ':star:' => 'star',
-	      ':developer:' => 'developer',
-	           ':bear:' => 'bear',
-	              "^^'" => 'blush',
-	        "^^&#8217;" => 'blush',
-	              "^^’" => 'blush',
-	            "*^-^*" => 'kitten',
-	            "=^-^=" => 'kitten',
-	       ":facepalm:" => 'facepalm',
-		);
-
-		$wpsmiliestrans = array_merge( $wpsmiliestrans, $bonus_smileys );
-
-		smilies_init();
 	}
 }
 
