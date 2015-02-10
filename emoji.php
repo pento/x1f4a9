@@ -139,9 +139,9 @@ class Emoji {
 			case 'icon_sad.gif':
 				return $cdn_url . '1f626.png';
 			case 'icon_exclaim.gif':
-				return plugins_url( 'smileys/exclamation.png', __FILE__ );
+				return $cdn_url . '2757.png';
 			case 'icon_question.gif':
-				return plugins_url( 'smileys/question.png', __FILE__ );
+				return $cdn_url . '2753.png';
 			default:
 				return $url;
 		}
