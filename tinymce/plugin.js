@@ -1,5 +1,5 @@
 // Based on the tinyMce plugin "wordpress"
-tinymce.PluginManager.add( 'emoji', function( editor, url ) { 
+tinymce.PluginManager.add( 'emoji', function( editor, url ) {
 	var TAG_NAME = "emoji";
 
 	var previousContent = '',
@@ -8,12 +8,12 @@ tinymce.PluginManager.add( 'emoji', function( editor, url ) {
 	// Loads stylesheet for custom styles within the editor
 	editor.on( 'init', function() {
 		cssId = editor.dom.uniqueId();
-		linkElm = editor.dom.create('link', {
-			id: cssId,
-			rel: 'stylesheet',
+		linkElm = editor.dom.create( 'link', {
+			id:   cssId,
+			rel:  'stylesheet',
 			href: url + '/css/editor.css'
 		});
-		editor.getDoc().getElementsByTagName('head')[0].appendChild(linkElm);
+		editor.getDoc().getElementsByTagName( 'head' )[0].appendChild( linkElm );
 	} );
 
 	// Hook into events to trigger emoji replace
@@ -77,7 +77,7 @@ tinymce.PluginManager.add( 'emoji', function( editor, url ) {
 	// Useful on save and when switching between HTML and text mode
 	editor.on( 'PostProcess', function( event ) {
 		if ( event.content ) {
-			event.content = event.content.replace(/<img[^>]+>/g, function( image ) {
+			event.content = event.content.replace( /<img[^>]+>/g, function( image ) {
 				if ( -1 !== image.indexOf( 'data-emoji' ) ) {
 					var match = image.match( /data-emoji="([^"]+)"/ );
 					if ( match ) {

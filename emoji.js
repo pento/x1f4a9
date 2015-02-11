@@ -51,7 +51,7 @@ var WPEmoji;
 			twemoji.parse( element, {
 				size: this.EMOJI_SIZE,
 				base: this.BASE_URL,
-				callback: function(icon, options, variant) {
+				callback: function( icon, options, variant ) {
 					// Ignore some standard characters that TinyMCE recommends in its character map.
 					switch ( icon ) {
 						case 'a9':
@@ -66,7 +66,7 @@ var WPEmoji;
 					}
 
 					// directly from twemoji
-					return ''.concat(options.base, options.size, '/', icon, options.ext);
+					return ''.concat( options.base, options.size, '/', icon, options.ext );
 				}
 			} );
 		},
