@@ -15,6 +15,13 @@ Development of this plugin is done on [Github](https://github.com/pento/x1f4a9).
 
 == Changelog ==
 
+= 0.3 =
+
+* Only load emoji when the browser doesn't have native support
+* Replace emoji with static images in RSS and email
+* Remove the bonus smilies added in 0.2
+* Replace some more of the smilies with emoji
+
 = 0.2 =
 
 * Add emoji encoding for non-utf8mb4 character sets

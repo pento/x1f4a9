@@ -26,6 +26,11 @@ update/other-thing
 
 ## Changelog
 
+### 0.3
+
+* Only load emoji when the browser doesn't have native support
+* Replace emoji with static images in RSS and email
+
 ### 0.2
 
 * Add emoji encoding for non-utf8mb4 character sets
