@@ -8,6 +8,8 @@ See https://github.com/twitter/twemoji for the source emoji
 */
 
 class Emoji {
+	public static $cdn_url = '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72/';
+
 	public static function init() {
 		wp_register_script( 'twemoji', plugins_url( 'twemoji/twemoji.js',   __FILE__ ) );
 		wp_enqueue_script(  'emoji',   plugins_url( 'emoji.js', __FILE__ ), array( 'twemoji' ) );
@@ -20,6 +22,12 @@ class Emoji {
 		add_action( 'wp_insert_post_data', array( __CLASS__, 'filter_post_fields' ), 10, 1 );
 
 		add_filter( 'smilies_src', array( __CLASS__, 'filter_smileys' ), 10, 2 );
+
+		add_filter( 'the_content_feed', array( __CLASS__, 'feed_emoji' ), 10, 1 );
+		add_filter( 'the_excerpt_rss',  array( __CLASS__, 'feed_emoji' ), 10, 1 );
+		add_filter( 'comment_text_rss', array( __CLASS__, 'feed_emoji' ), 10, 1 );
+
+		add_filter( 'wp_mail', array( __CLASS__, 'mail_emoji' ), 10, 1 );
 	}
 
 	public static function add_mce_plugin( $plugins ) {
@@ -56,10 +64,11 @@ class Emoji {
 	 * This allows us to store emoji in a DB using the utf8 character set.
 	 *
 	 * @since 4.2.0
-	 * @param  string $content The content to encode
+	 * @param string $content The content to encode
+	 * @param bool $static Whether to encode the emoji as static image links. Optional, default false.
 	 * @return string The encoded content
 	 */
-	public static function wp_encode_emoji( $content ) {
+	public static function wp_encode_emoji( $content, $static = false ) {
 		if ( function_exists( 'mb_convert_encoding' ) ) {
 			$regex = '/(
 			     \x23\xE2\x83\xA3               # Digits
@@ -83,7 +92,12 @@ class Emoji {
 						 */
 						$unpacked = unpack( 'H*', mb_convert_encoding( $emoji, 'UTF-32', 'UTF-8' ) );
 						if ( isset( $unpacked[1] ) ) {
-							$entity = '&#x' . trim( $unpacked[1], '0' ) . ';';
+							$entity = trim( $unpacked[1], '0' );
+							if ( $static ) {
+								$entity = '<img src="https:' . Emoji::$cdn_url . $entity . '.png" class="wp-smiley" style="height: 1em;" />';
+							} else {
+								$entity = '&#x' . $entity . ';';
+							}
 							$content = str_replace( $emoji, $entity, $content );
 						}
 					}
@@ -95,56 +109,63 @@ class Emoji {
 	}
 
 	public static function filter_smileys( $url, $img ) {
-		$cdn_url = '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72/';
-
 		switch ( $img ) {
 			case 'icon_mrgreen.gif':
 				return plugins_url( 'smileys/mrgreen.png', __FILE__ );
 			case 'icon_neutral.gif':
-				return $cdn_url . '1f610.png';
+				return Emoji::$cdn_url . '1f610.png';
 			case 'icon_twisted.gif':
-				return $cdn_url . '1f608.png';
+				return Emoji::$cdn_url . '1f608.png';
 			case 'icon_arrow.gif':
-				return $cdn_url . '27a1.png';
+				return Emoji::$cdn_url . '27a1.png';
 			case 'icon_eek.gif':
-				return $cdn_url . '1f62f.png';
+				return Emoji::$cdn_url . '1f62f.png';
 			case 'icon_smile.gif':
 				return plugins_url( 'smileys/simple-smile.png', __FILE__ );
 			case 'icon_confused.gif':
-				return $cdn_url . '1f62f.png';
+				return Emoji::$cdn_url . '1f62f.png';
 			case 'icon_cool.gif':
-				return $cdn_url . '1f60e.png';
+				return Emoji::$cdn_url . '1f60e.png';
 			case 'icon_evil.gif':
-				return $cdn_url . '1f47f.png';
+				return Emoji::$cdn_url . '1f47f.png';
 			case 'icon_biggrin.gif':
-				return $cdn_url . '1f604.png';
+				return Emoji::$cdn_url . '1f604.png';
 			case 'icon_idea.gif':
-				return $cdn_url . '1f4a1.png';
+				return Emoji::$cdn_url . '1f4a1.png';
 			case 'icon_redface.gif':
-				return $cdn_url . '1f633.png';
+				return Emoji::$cdn_url . '1f633.png';
 			case 'icon_razz.gif':
-				return $cdn_url . '1f61b.png';
+				return Emoji::$cdn_url . '1f61b.png';
 			case 'icon_rolleyes.gif':
 				return plugins_url( 'smileys/rolleyes.png', __FILE__ );
 			case 'icon_wink.gif':
-				return $cdn_url . '1f609.png';
+				return Emoji::$cdn_url . '1f609.png';
 			case 'icon_cry.gif':
-				return $cdn_url . '1f625.png';
+				return Emoji::$cdn_url . '1f625.png';
 			case 'icon_surprised.gif':
-				return $cdn_url . '1f62f.png';
+				return Emoji::$cdn_url . '1f62f.png';
 			case 'icon_lol.gif':
-				return $cdn_url . '1f604.png';
+				return Emoji::$cdn_url . '1f604.png';
 			case 'icon_mad.gif':
-				return $cdn_url . '1f621.png';
+				return Emoji::$cdn_url . '1f621.png';
 			case 'icon_sad.gif':
-				return $cdn_url . '1f626.png';
+				return Emoji::$cdn_url . '1f626.png';
 			case 'icon_exclaim.gif':
-				return $cdn_url . '2757.png';
+				return Emoji::$cdn_url . '2757.png';
 			case 'icon_question.gif':
-				return $cdn_url . '2753.png';
+				return Emoji::$cdn_url . '2753.png';
 			default:
 				return $url;
 		}
+	}
+
+	public static function static_emoji( $content ) {
+		return Emoji::wp_encode_emoji( $content, true );
+	}
+
+	public static function mail_emoji( $mail ) {
+		$mail['message'] = Emoji::wp_encode_emoji( $mail['message'], true );
+		return $mail;
 	}
 }
 
