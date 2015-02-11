@@ -45,6 +45,10 @@ tinymce.PluginManager.add( 'emoji', function( editor, url ) {
 			return;
 		}
 
+		if ( WPEmoji.browserSupportsEmoji() ) {
+			return;
+		}
+
 		if ( ! twemoji.test( editor.getContent() ) ) {
 			return;
 		}
