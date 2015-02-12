@@ -8,7 +8,7 @@ See https://github.com/twitter/twemoji for the source emoji
 */
 
 class Emoji {
-	public static $cdn_url = '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72/';
+	public static $cdn_url = apply_filters( 'emoji_cdn_url', '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72/' );
 
 	public static function init() {
 		wp_register_script( 'twemoji', plugins_url( 'twemoji/twemoji.js',   __FILE__ ) );
