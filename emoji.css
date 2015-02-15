@@ -9,6 +9,6 @@ img.emoji {
 	padding: 0 !important;
 }
 
-.page-content img.wp-smiley, .entry-content img.wp-smiley, .comment-content img.wp-smiley {
+img.wp-smiley {
 	height: 1em;
 }
