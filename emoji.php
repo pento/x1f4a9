@@ -159,7 +159,7 @@ class Emoji {
 		}
 	}
 
-	public static function static_emoji( $content ) {
+	public static function feed_emoji( $content ) {
 		return Emoji::wp_encode_emoji( $content, true );
 	}
 
