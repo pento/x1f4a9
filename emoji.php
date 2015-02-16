@@ -8,40 +8,50 @@ See https://github.com/twitter/twemoji for the source emoji
 */
 
 class Emoji {
-	public static $cdn_url = '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72/';
+	public $cdn_url = '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72/';
 
 	public static function init() {
+		static $instance;
+
+		if ( ! $instance ) {
+			$instance = new Emoji();
+		}
+
+		return $instance;
+	}
+
+	public function __construct() {
 		wp_register_script( 'twemoji', plugins_url( 'twemoji/twemoji.js',   __FILE__ ) );
 		wp_enqueue_script(  'emoji',   plugins_url( 'emoji.js', __FILE__ ), array( 'twemoji' ) );
 
 		wp_enqueue_style( 'emoji-css', plugins_url( 'emoji.css', __FILE__ ) );
 
-		add_action( 'mce_external_plugins', array( __CLASS__, 'add_mce_plugin' ) );
-		add_action( 'wp_enqueue_editor',    array( __CLASS__, 'load_mce_script' ) );
+		add_action( 'mce_external_plugins', array( $this, 'add_mce_plugin' ) );
+		add_action( 'wp_enqueue_editor',    array( $this, 'load_mce_script' ) );
 
-		add_action( 'wp_insert_post_data', array( __CLASS__, 'filter_post_fields' ), 10, 1 );
+		add_action( 'wp_insert_post_data', array( $this, 'filter_post_fields' ), 10, 1 );
 
-		add_filter( 'smilies_src', array( __CLASS__, 'filter_smileys' ), 10, 2 );
+		add_filter( 'smilies_src', array( $this, 'filter_smileys' ), 10, 2 );
 
-		add_filter( 'the_content_feed', array( __CLASS__, 'feed_emoji' ), 10, 1 );
-		add_filter( 'the_excerpt_rss',  array( __CLASS__, 'feed_emoji' ), 10, 1 );
-		add_filter( 'comment_text_rss', array( __CLASS__, 'feed_emoji' ), 10, 1 );
+		add_filter( 'the_content_feed', array( $this, 'feed_emoji' ), 10, 1 );
+		add_filter( 'the_excerpt_rss',  array( $this, 'feed_emoji' ), 10, 1 );
+		add_filter( 'comment_text_rss', array( $this, 'feed_emoji' ), 10, 1 );
 
-		add_filter( 'wp_mail', array( __CLASS__, 'mail_emoji' ), 10, 1 );
+		add_filter( 'wp_mail', array( $this, 'mail_emoji' ), 10, 1 );
 	}
 
-	public static function add_mce_plugin( $plugins ) {
+	public function add_mce_plugin( $plugins ) {
 		$plugins['emoji'] = plugins_url( 'tinymce/plugin.js', __FILE__ );
 		return $plugins;
 	}
 
-	public static function load_mce_script( $opts ) {
+	public function load_mce_script( $opts ) {
 		if ( $opts['tinymce'] ) {
 			wp_enqueue_script( 'emoji' );
 		}
 	}
 
-	public static function filter_post_fields( $data ) {
+	public function filter_post_fields( $data ) {
 		global $wpdb;
 		$fields = array( 'post_title', 'post_content', 'post_excerpt' );
 
@@ -49,7 +59,7 @@ class Emoji {
 			if ( isset( $data[ $field ] ) ) {
 				$charset = $wpdb->get_col_charset( $wpdb->posts, $field );
 				if ( 'utf8' === $charset ) {
-					$data[ $field ] = Emoji::wp_encode_emoji( $data[ $field ] );
+					$data[ $field ] = $this->wp_encode_emoji( $data[ $field ] );
 				}
 			}
 		}
@@ -68,7 +78,7 @@ class Emoji {
 	 * @param bool $static Whether to encode the emoji as static image links. Optional, default false.
 	 * @return string The encoded content
 	 */
-	public static function wp_encode_emoji( $content, $static = false ) {
+	public function wp_encode_emoji( $content, $static = false ) {
 		if ( function_exists( 'mb_convert_encoding' ) ) {
 			$regex = '/(
 			     \x23\xE2\x83\xA3               # Digits
@@ -94,7 +104,7 @@ class Emoji {
 						if ( isset( $unpacked[1] ) ) {
 							$entity = trim( $unpacked[1], '0' );
 							if ( $static ) {
-								$entity = '<img src="https:' . Emoji::$cdn_url . $entity . '.png" class="wp-smiley" style="height: 1em;" />';
+								$entity = '<img src="https:' . $this->cdn_url . $entity . '.png" class="wp-smiley" style="height: 1em;" />';
 							} else {
 								$entity = '&#x' . $entity . ';';
 							}
@@ -108,63 +118,63 @@ class Emoji {
 		return $content;
 	}
 
-	public static function filter_smileys( $url, $img ) {
+	public function filter_smileys( $url, $img ) {
 		switch ( $img ) {
 			case 'icon_mrgreen.gif':
 				return plugins_url( 'smileys/mrgreen.png', __FILE__ );
 			case 'icon_neutral.gif':
-				return Emoji::$cdn_url . '1f610.png';
+				return $this->cdn_url . '1f610.png';
 			case 'icon_twisted.gif':
-				return Emoji::$cdn_url . '1f608.png';
+				return $this->cdn_url . '1f608.png';
 			case 'icon_arrow.gif':
-				return Emoji::$cdn_url . '27a1.png';
+				return $this->cdn_url . '27a1.png';
 			case 'icon_eek.gif':
-				return Emoji::$cdn_url . '1f62f.png';
+				return $this->cdn_url . '1f62f.png';
 			case 'icon_smile.gif':
 				return plugins_url( 'smileys/simple-smile.png', __FILE__ );
 			case 'icon_confused.gif':
-				return Emoji::$cdn_url . '1f62f.png';
+				return $this->cdn_url . '1f62f.png';
 			case 'icon_cool.gif':
-				return Emoji::$cdn_url . '1f60e.png';
+				return $this->cdn_url . '1f60e.png';
 			case 'icon_evil.gif':
-				return Emoji::$cdn_url . '1f47f.png';
+				return $this->cdn_url . '1f47f.png';
 			case 'icon_biggrin.gif':
-				return Emoji::$cdn_url . '1f604.png';
+				return $this->cdn_url . '1f604.png';
 			case 'icon_idea.gif':
-				return Emoji::$cdn_url . '1f4a1.png';
+				return $this->cdn_url . '1f4a1.png';
 			case 'icon_redface.gif':
-				return Emoji::$cdn_url . '1f633.png';
+				return $this->cdn_url . '1f633.png';
 			case 'icon_razz.gif':
-				return Emoji::$cdn_url . '1f61b.png';
+				return $this->cdn_url . '1f61b.png';
 			case 'icon_rolleyes.gif':
 				return plugins_url( 'smileys/rolleyes.png', __FILE__ );
 			case 'icon_wink.gif':
-				return Emoji::$cdn_url . '1f609.png';
+				return $this->cdn_url . '1f609.png';
 			case 'icon_cry.gif':
-				return Emoji::$cdn_url . '1f625.png';
+				return $this->cdn_url . '1f625.png';
 			case 'icon_surprised.gif':
-				return Emoji::$cdn_url . '1f62f.png';
+				return $this->cdn_url . '1f62f.png';
 			case 'icon_lol.gif':
-				return Emoji::$cdn_url . '1f604.png';
+				return $this->cdn_url . '1f604.png';
 			case 'icon_mad.gif':
-				return Emoji::$cdn_url . '1f621.png';
+				return $this->cdn_url . '1f621.png';
 			case 'icon_sad.gif':
-				return Emoji::$cdn_url . '1f626.png';
+				return $this->cdn_url . '1f626.png';
 			case 'icon_exclaim.gif':
-				return Emoji::$cdn_url . '2757.png';
+				return $this->cdn_url . '2757.png';
 			case 'icon_question.gif':
-				return Emoji::$cdn_url . '2753.png';
+				return $this->cdn_url . '2753.png';
 			default:
 				return $url;
 		}
 	}
 
-	public static function feed_emoji( $content ) {
-		return Emoji::wp_encode_emoji( $content, true );
+	public function feed_emoji( $content ) {
+		return $this->wp_encode_emoji( $content, true );
 	}
 
-	public static function mail_emoji( $mail ) {
-		$mail['message'] = Emoji::wp_encode_emoji( $mail['message'], true );
+	public function mail_emoji( $mail ) {
+		$mail['message'] = $this->wp_encode_emoji( $mail['message'], true );
 		return $mail;
 	}
 }
