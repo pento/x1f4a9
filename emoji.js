@@ -2,13 +2,11 @@ var WPEmoji;
 
 (function() {
 	WPEmoji = {
-		EMOJI_SIZE: 72,
-		BASE_URL: '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/',
+		BASE_URL: '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72',
 
 		init: function() {
 			var size, base_url;
 			if ( typeof EmojiSettings !== 'undefined' ) {
-				size = EmojiSettings.size || null;
 				base_url = EmojiSettings.base_url || null;
 			}
 
@@ -21,7 +19,7 @@ var WPEmoji;
 			if ( typeof infiniteScroll !== 'undefined' ) {
 				jQuery( document.body ).on( 'post-load', function( response ) {
 					// TODO: ideally, we should only target the newly added elements
-					emoji.parse( document.body, size, base_url );
+					emoji.parse( document.body, base_url );
 				} );
 			}
 		},
@@ -84,10 +82,9 @@ var WPEmoji;
 
 		},
 
-		parse: function( element, size, base_url ) {
+		parse: function( element, base_url ) {
 			twemoji.parse( element, {
-				size: this.EMOJI_SIZE,
-				base: this.BASE_URL,
+				base: base_url || this.BASE_URL,
 				callback: function( icon, options, variant ) {
 					// Ignore some standard characters that TinyMCE recommends in its character map.
 					switch ( icon ) {
@@ -102,8 +99,7 @@ var WPEmoji;
 							return false;
 					}
 
-					// directly from twemoji
-					return ''.concat( options.base, options.size, '/', icon, options.ext );
+					return ''.concat( options.base, '/', icon, options.ext );
 				}
 			} );
 		},
