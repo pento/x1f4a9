@@ -109,16 +109,16 @@ img.wp-smiley {
 	 * This allows us to store emoji in a DB using the utf8 character set.
 	 *
 	 * @since 4.2.0
-	 * @param string $content The content to encode
-	 * @param bool $static Whether to encode the emoji as static image links. Optional, default false.
-	 * @return string The encoded content
+	 *
+	 * @param string $content The content to encode.
+	 * @return string The encoded content.
 	 */
-	public function wp_encode_emoji( $content, $static = false ) {
+	public function wp_encode_emoji( $content ) {
 		if ( function_exists( 'mb_convert_encoding' ) ) {
 			$regex = '/(
 			     \x23\xE2\x83\xA3               # Digits
 			     [\x30-\x39]\xE2\x83\xA3
-			   | \xF0\x9F[\x85-\x88][\xB0-\xBF] # Enclosed characters
+			   | \xF0\x9F[\x85-\x88][\xA6-\xBF] # Enclosed characters
 			   | \xF0\x9F[\x8C-\x97][\x80-\xBF] # Misc
 			   | \xF0\x9F\x98[\x80-\xBF]        # Smilies
 			   | \xF0\x9F\x99[\x80-\x8F]
@@ -137,15 +137,53 @@ img.wp-smiley {
 						 */
 						$unpacked = unpack( 'H*', mb_convert_encoding( $emoji, 'UTF-32', 'UTF-8' ) );
 						if ( isset( $unpacked[1] ) ) {
-							$entity = trim( $unpacked[1], '0' );
-							if ( $static ) {
-								$entity = '<img src="https:' . $this->cdn_url . $entity . '.png" class="wp-smiley" style="height: 1em;" />';
-							} else {
-								$entity = '&#x' . $entity . ';';
-							}
+							$entity = '&#x' . trim( $unpacked[1], '0' ) . ';';
 							$content = str_replace( $emoji, $entity, $content );
 						}
 					}
+				}
+			}
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Convert emoji to a static <img> link.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $content The content to encode.
+	 * @return string The encoded content.
+	 */
+	public function wp_staticize_emoji( $content ) {
+		$content = $this->wp_encode_emoji( $content );
+
+		$matches = array();
+		if ( preg_match_all( '/(&#x1f1(e[6-9a-f]|f[0-9a-f]);){2}/', $content, $matches ) ) {
+			if ( ! empty( $matches[0] ) ) {
+				foreach ( $matches[0] as $flag ) {
+					$chars = str_replace( array( '&#x', ';'), '', $flag );
+
+					list( $char1, $char2 ) = str_split( $chars, 5 );
+					$entity = '<img src="https:' . $this->cdn_url . $char1 . '-' . $char2 . '.png" class="wp-smiley" style="height: 1em;" />';
+
+					$content = str_replace( $flag, $entity, $content );
+				}
+			}
+		}
+
+		// Loosely match the Emoji Unicode range.
+		$regex = '/(&#x[2-3][0-9a-f]{3};|&#x1f[1-6][0-9a-f]{2};)/';
+
+		$matches = array();
+		if ( preg_match_all( $regex, $content, $matches ) ) {
+			if ( ! empty( $matches[1] ) ) {
+				foreach ( $matches[1] as $emoji ) {
+					$char = str_replace( array( '&#x', ';'), '', $emoji );
+					$entity = '<img src="https:' . $this->cdn_url . $char . '.png" class="wp-smiley" style="height: 1em;" />';
+
+					$content = str_replace( $emoji, $entity, $content );
 				}
 			}
 		}
@@ -205,11 +243,11 @@ img.wp-smiley {
 	}
 
 	public function feed_emoji( $content ) {
-		return $this->wp_encode_emoji( $content, true );
+		return $this->wp_staticize_emoji( $content, true );
 	}
 
 	public function mail_emoji( $mail ) {
-		$mail['message'] = $this->wp_encode_emoji( $mail['message'], true );
+		$mail['message'] = $this->wp_staticize_emoji( $mail['message'], true );
 		return $mail;
 	}
 }
