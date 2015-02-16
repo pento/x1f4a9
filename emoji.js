@@ -69,6 +69,17 @@ var WPEmoji;
 			context.font = "32px Arial";
 			context.fillText( smile, 0, 0 );
 
+			/*
+			 * Sooooo.... this works because the image will be one of three things:
+			 * - Two empty squares, if the browser doen't render emoji
+			 * - Two squares with 'G' and 'B' in them, if the browser doen't render flag emoji
+			 * - The British flag
+			 *
+			 * The first two will encode to very small images (1-2KB data URLs), the third will encode
+			 * to a large image (4-5KB data URL).
+			 *
+			 * There are probably less dumb ways to do this.
+			 */
 			return canvas.toDataURL().length > 3000;
 
 		},
