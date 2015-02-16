@@ -24,7 +24,7 @@ class Emoji {
 		wp_register_script( 'twemoji', plugins_url( 'twemoji/twemoji.js',   __FILE__ ) );
 		wp_enqueue_script(  'emoji',   plugins_url( 'emoji.js', __FILE__ ), array( 'twemoji' ) );
 
-		wp_enqueue_style( 'emoji-css', plugins_url( 'emoji.css', __FILE__ ) );
+		add_action( 'wp_print_styles', array( $this, 'print_styles' ) );
 
 		add_action( 'mce_external_plugins', array( $this, 'add_mce_plugin' ) );
 		add_action( 'wp_enqueue_editor',    array( $this, 'load_mce_script' ) );
@@ -64,6 +64,27 @@ class Emoji {
 			}
 		}
 		return $data;
+	}
+
+	public function print_styles() {
+?>
+<style type="text/css">
+img.emoji {
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .05em 0 .1em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+
+img.wp-smiley {
+	height: 1em;
+}
+</style>
+<?php
 	}
 
 	/**
