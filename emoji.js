@@ -12,7 +12,7 @@ var WPEmoji;
 				base_url = EmojiSettings.base_url || null;
 			}
 
-			if ( WPEmoji.browserSupportsEmoji() ) {
+			if ( WPEmoji.browserSupportsEmoji() && WPEmoji.browserSupportsFlagEmoji() ) {
 				return;
 			}
 
@@ -45,6 +45,32 @@ var WPEmoji;
 			context.fillText( smile, 0, 0 );
 
 			return context.getImageData( 16, 16, 1, 1 ).data[0] !== 0;
+		},
+
+		browserSupportsFlagEmoji: function() {
+			var context, smiley, canvas;
+
+			canvas = document.createElement( 'canvas' );
+
+			if ( ! canvas.getContext ) {
+				return;
+			}
+
+			context = canvas.getContext( '2d' );
+
+			if ( typeof context.fillText != 'function' ) {
+				return;
+			}
+
+			smile =  String.fromCharCode(55356) + String.fromCharCode(56812); // [G]
+			smile += String.fromCharCode(55356) + String.fromCharCode(56807); // [B]
+
+			context.textBaseline = "top";
+			context.font = "32px Arial";
+			context.fillText( smile, 0, 0 );
+
+			return canvas.toDataURL().length > 3000;
+
 		},
 
 		parse: function( element, size, base_url ) {
