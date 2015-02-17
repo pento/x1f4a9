@@ -18,8 +18,7 @@ var WPEmoji;
 
 			if ( typeof infiniteScroll !== 'undefined' ) {
 				jQuery( document.body ).on( 'post-load', function( response ) {
-					// TODO: ideally, we should only target the newly added elements
-					emoji.parse( document.body, base_url );
+					emoji.parse( infiniteScroll.scroller.element.get( 0 ), base_url );
 				} );
 			}
 		},
