@@ -56,7 +56,7 @@ class Emoji {
 	}
 
 	public function add_mce_plugin( $plugins ) {
-		$plugins['emoji'] = plugins_url( 'tinymce/plugin.js', __FILE__ );
+		$plugins['wpemoji'] = plugins_url( 'tinymce/plugin.js', __FILE__ );
 		return $plugins;
 	}
 
