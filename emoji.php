@@ -84,6 +84,7 @@ class Emoji {
 	public function print_styles() {
 ?>
 <style type="text/css">
+img.wp-smiley,
 img.emoji {
 	border: none !important;
 	box-shadow: none !important;
@@ -93,10 +94,6 @@ img.emoji {
 	vertical-align: -0.1em !important;
 	background: none !important;
 	padding: 0 !important;
-}
-
-img.wp-smiley {
-	height: 1em;
 }
 </style>
 <?php
