@@ -82,7 +82,7 @@ var WPEmoji;
 		},
 
 		parse: function( element, base_url ) {
-			twemoji.parse( element, {
+			return twemoji.parse( element, {
 				base: base_url || this.BASE_URL,
 				callback: function( icon, options, variant ) {
 					// Ignore some standard characters that TinyMCE recommends in its character map.
