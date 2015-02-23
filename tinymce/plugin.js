@@ -2,6 +2,10 @@
 	tinymce.PluginManager.add( 'wpemoji', function( editor, url ) {
 		var typing;
 
+		if ( WPEmoji.browserSupportsEmoji() ) {
+			return;
+		}
+
 		// Loads stylesheet for custom styles within the editor
 		editor.on( 'init', function() {
 			var cssId = editor.dom.uniqueId();
