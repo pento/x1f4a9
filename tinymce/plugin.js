@@ -1,5 +1,6 @@
 ( function( tinymce, WPEmoji ) {
 	tinymce.PluginManager.add( 'wpemoji', function( editor, url ) {
+		var typing;
 
 		// Loads stylesheet for custom styles within the editor
 		editor.on( 'init', function() {
@@ -12,11 +13,20 @@
 			editor.getDoc().getElementsByTagName( 'head' )[0].appendChild( linkElm );
 		} );
 
+		editor.on( 'keydown keyup', function( event ) {
+			typing = event.type === 'keydown';
+		} );
+
 		editor.on( 'input setcontent', function() {
-			var selection = editor.selection,
-				node = selection.getNode(),
-				bookmark = selection.getBookmark(),
-				imgs;
+			var selection, node, bookmark, imgs;
+
+			if ( typing ) {
+				return;
+			}
+
+			selection = editor.selection;
+			node = selection.getNode();
+			bookmark = selection.getBookmark();
 
 			WPEmoji.parse( node );
 
