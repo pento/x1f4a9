@@ -57,7 +57,7 @@
 
 		editor.on( 'resolvename', function( event ) {
 			if ( event.target.nodeName === 'IMG' && editor.dom.getAttrib( event.target, 'data-wp-emoji' ) ) {
-				event.name = 'emoji';
+				event.preventDefault();
 			}
 		} );
 	} );
