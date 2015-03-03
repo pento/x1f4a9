@@ -5,7 +5,7 @@ var WPEmoji;
 		BASE_URL: '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72',
 
 		parseEmoji: false,
-		onlyParseFlags: false,
+		parseFlags: false,
 
 		init: function() {
 			var size, base_url;
@@ -14,7 +14,8 @@ var WPEmoji;
 			}
 
 			WPEmoji.parseEmoji = ! WPEmoji.browserSupportsEmoji() || ! WPEmoji.browserSupportsFlagEmoji();
-			WPEmoji.onlyParseFlags = ! WPEmoji.browserSupportsFlagEmoji();
+			WPEmoji.parseAllEmoji = ! WPEmoji.browserSupportsEmoji();
+			WPEmoji.parseFlags = ! WPEmoji.browserSupportsFlagEmoji();
 
 			if ( ! WPEmoji.parseEmoji ) {
 				return;
@@ -108,7 +109,7 @@ var WPEmoji;
 							return false;
 					}
 
-					if ( WPEmoji.onlyParseFlags && ! icon.match( /1f1(e[6-9a-f]|f[1-9a-f])-1f1(e[6-9a-f]|f[1-9a-f])/ ) ) {
+					if ( WPEmoji.parseFlags && ! WPEmoji.parseAllEmoji && ! icon.match( /^1f1(e[6-9a-f]|f[1-9a-f])-1f1(e[6-9a-f]|f[1-9a-f])$/ ) ) {
 						return false;
 					}
 
