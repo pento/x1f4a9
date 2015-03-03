@@ -18,7 +18,7 @@ var WPEmoji;
 
 			if ( typeof infiniteScroll !== 'undefined' ) {
 				jQuery( document.body ).on( 'post-load', function( response ) {
-					emoji.parse( infiniteScroll.scroller.element.get( 0 ), base_url );
+					WPEmoji.parse( infiniteScroll.scroller.element.get( 0 ), base_url );
 				} );
 			}
 		},
