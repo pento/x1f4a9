@@ -15,6 +15,14 @@ Development of this plugin is done on [Github](https://github.com/pento/x1f4a9).
 
 == Changelog ==
 
+= 0.4 =
+
+* Add support for static emoji images in RSS and Email
+* Performance improvements in TinyMCE
+* Add fallbacks to Twemoji for flags only, which Firefox OS X doesn't support
+* Add an emoji_url filter, for changing where emoji images are loaded from
+* Fix emoji incorrectly being parsed in tags that don't support <img> children
+
 = 0.3 =
 
 * Only load emoji when the browser doesn't have native support

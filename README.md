@@ -26,10 +26,20 @@ update/other-thing
 
 ## Changelog
 
+### 0.4
+
+* Add support for static emoji images in RSS and Email
+* Performance improvements in TinyMCE
+* Add fallbacks to Twemoji for flags only, which Firefox OS X doesn't support
+* Add an emoji_url filter, for changing where emoji images are loaded from
+* Fix emoji incorrectly being parsed in tags that don't support <img> children
+
 ### 0.3
 
 * Only load emoji when the browser doesn't have native support
 * Replace emoji with static images in RSS and email
+* Remove the bonus smilies added in 0.2
+* Replace some more of the smilies with emoji
 
 ### 0.2
 
