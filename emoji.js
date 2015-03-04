@@ -3,6 +3,7 @@ var WPEmoji;
 (function() {
 	WPEmoji = {
 		base_url: '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72',
+		ext: '.png',
 
 		parseEmoji: false,
 		parseFlags: false,
@@ -10,6 +11,7 @@ var WPEmoji;
 		init: function() {
 			if ( typeof EmojiSettings !== 'undefined' ) {
 				this.base_url = EmojiSettings.base_url || this.base_url;
+				this.ext = EmojiSettings.ext || this.ext;
 			}
 
 			WPEmoji.parseEmoji = ! WPEmoji.browserSupportsEmoji() || ! WPEmoji.browserSupportsFlagEmoji();
@@ -96,6 +98,7 @@ var WPEmoji;
 
 			return twemoji.parse( element, {
 				base: this.base_url,
+				ext: this.ext,
 				callback: function( icon, options, variant ) {
 					// Ignore some standard characters that TinyMCE recommends in its character map.
 					switch ( icon ) {

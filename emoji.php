@@ -9,6 +9,7 @@ See https://github.com/twitter/twemoji for the source emoji
 
 class Emoji {
 	public $cdn_url;
+	public $ext;
 
 	public static function init() {
 		static $instance;
@@ -26,16 +27,25 @@ class Emoji {
 		 *
 		 * @since 4.2.0
 		 *
-		 * @param string The emoji base URL
+		 * @param string The emoji base URL.
 		 */
 		$this->cdn_url = apply_filters( 'emoji_url', '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72/' );
 
+		/**
+		 * Filter the extension of the emoji files.
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param string The emoji extension.
+		 */
+		$this->ext = apply_filters( 'emoji_ext', '.png' );
 
 		wp_register_script( 'twemoji', plugins_url( 'twemoji/twemoji.js',   __FILE__ ) );
 		wp_enqueue_script(  'emoji',   plugins_url( 'emoji.js', __FILE__ ), array( 'twemoji' ) );
 
 		wp_localize_script( 'emoji', 'EmojiSettings', array(
 			'base_url' => $this->cdn_url,
+			'ext'      => $this->ext,
 		) );
 
 		add_action( 'wp_print_styles', array( $this, 'print_styles' ) );
