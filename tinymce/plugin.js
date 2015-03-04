@@ -2,7 +2,7 @@
 	tinymce.PluginManager.add( 'wpemoji', function( editor, url ) {
 		var typing;
 
-		if ( WPEmoji.browserSupportsEmoji() ) {
+		if ( ! WPEmoji.parseEmoji ) {
 			return;
 		}
 

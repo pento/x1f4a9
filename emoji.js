@@ -2,15 +2,14 @@ var WPEmoji;
 
 (function() {
 	WPEmoji = {
-		BASE_URL: '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72',
+		base_url: '//s0.wp.com/wp-content/mu-plugins/emoji/twemoji/72x72',
 
 		parseEmoji: false,
 		parseFlags: false,
 
 		init: function() {
-			var size, base_url;
 			if ( typeof EmojiSettings !== 'undefined' ) {
-				base_url = EmojiSettings.base_url || null;
+				this.base_url = EmojiSettings.base_url || this.base_url;
 			}
 
 			WPEmoji.parseEmoji = ! WPEmoji.browserSupportsEmoji() || ! WPEmoji.browserSupportsFlagEmoji();
@@ -21,13 +20,15 @@ var WPEmoji;
 				return;
 			}
 
-			WPEmoji.parse( document.body, size, base_url );
-
 			if ( typeof infiniteScroll !== 'undefined' ) {
 				jQuery( document.body ).on( 'post-load', function( response ) {
-					WPEmoji.parse( infiniteScroll.scroller.element.get( 0 ), base_url );
+					WPEmoji.parse( infiniteScroll.scroller.element.get( 0 ) );
 				} );
 			}
+		},
+
+		load: function() {
+			WPEmoji.parse( document.body );
 		},
 
 		browserSupportsEmoji: function() {
@@ -88,13 +89,13 @@ var WPEmoji;
 
 		},
 
-		parse: function( element, base_url ) {
+		parse: function( element ) {
 			if ( ! WPEmoji.parseEmoji ) {
 				return;
 			}
 
 			return twemoji.parse( element, {
-				base: base_url || this.BASE_URL,
+				base: this.base_url,
 				callback: function( icon, options, variant ) {
 					// Ignore some standard characters that TinyMCE recommends in its character map.
 					switch ( icon ) {
@@ -120,8 +121,10 @@ var WPEmoji;
 	}
 
 	if ( window.addEventListener ) {
-		window.addEventListener( 'load', WPEmoji.init, false );
+		window.addEventListener( 'load', WPEmoji.load, false );
 	} else if ( window.attachEvent ) {
-		window.attachEvent( 'onload', WPEmoji.init );
+		window.attachEvent( 'onload', WPEmoji.load );
 	}
+
+	WPEmoji.init();
 })();
