@@ -14,8 +14,10 @@ var WPEmoji;
 				this.ext = EmojiSettings.ext || this.ext;
 			}
 
-			WPEmoji.parseEmoji = ! WPEmoji.browserSupportsEmoji() || ! WPEmoji.browserSupportsFlagEmoji();
-			WPEmoji.parseAllEmoji = ! WPEmoji.browserSupportsEmoji();
+			WPEmoji.parseEmoji = ! WPEmoji.browserSupportsEmoji()
+			                  || ! WPEmoji.browserSupportsFlagEmoji()
+			                  || WPEmoji.browserIsUnbelievablyStupid();
+			WPEmoji.parseAllEmoji = ! WPEmoji.browserSupportsEmoji() || WPEmoji.browserIsUnbelievablyStupid();
 			WPEmoji.parseFlags = ! WPEmoji.browserSupportsFlagEmoji();
 
 			if ( ! WPEmoji.parseEmoji ) {
@@ -89,6 +91,10 @@ var WPEmoji;
 			 */
 			return canvas.toDataURL().length > 3000;
 
+		},
+
+		browserIsUnbelievablyStupid: function() {
+			return ( navigator.appVersion.indexOf( "Mac" ) != -1 ) && !! window.chrome;
 		},
 
 		parse: function( element ) {
