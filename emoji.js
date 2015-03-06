@@ -14,10 +14,8 @@ var WPEmoji;
 				this.ext = EmojiSettings.ext || this.ext;
 			}
 
-			WPEmoji.parseEmoji = ! WPEmoji.browserSupportsEmoji()
-			                  || ! WPEmoji.browserSupportsFlagEmoji()
-			                  || WPEmoji.browserIsUnbelievablyStupid();
-			WPEmoji.parseAllEmoji = ! WPEmoji.browserSupportsEmoji() || WPEmoji.browserIsUnbelievablyStupid();
+			WPEmoji.parseEmoji = ! WPEmoji.browserSupportsEmoji() || ! WPEmoji.browserSupportsFlagEmoji()
+			WPEmoji.parseAllEmoji = ! WPEmoji.browserSupportsEmoji();
 			WPEmoji.parseFlags = ! WPEmoji.browserSupportsFlagEmoji();
 
 			if ( ! WPEmoji.parseEmoji ) {
@@ -50,7 +48,7 @@ var WPEmoji;
 			smile = String.fromCharCode( 55357 ) + String.fromCharCode( 56835 );
 
 			context.textBaseline = "top";
-			context.font = "32px Arial";
+			context.font = "600 32px Arial";
 			context.fillText( smile, 0, 0 );
 
 			return context.getImageData( 16, 16, 1, 1 ).data[0] !== 0;
@@ -91,10 +89,6 @@ var WPEmoji;
 			 */
 			return canvas.toDataURL().length > 3000;
 
-		},
-
-		browserIsUnbelievablyStupid: function() {
-			return ( navigator.appVersion.indexOf( "Mac" ) != -1 ) && !! window.chrome;
 		},
 
 		parse: function( element ) {
