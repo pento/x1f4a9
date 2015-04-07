@@ -3,6 +3,8 @@ x1f4a9
 
 If only there was a consistent emoji experience for WordPress.
 
+*This was an experimental plugin to develop Emoji support in WordPress. It has been superceded by WordPress 4.2, and no longer works.*
+
 ## Description
 
 This is a WordPress implementation of Twitter's open source [twemoji](https://github.com/twitter/twemoji) emoji set.

@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: 💩
-Description: Twitters Emoji for WordPress
+Description: Twitters Emoji for WordPress. <strong>This plugin will automatically deactivate itself, as it has been superceded by WordPress 4.2.</strong>
 Version: 0.4
 
 See https://github.com/twitter/twemoji for the source emoji
@@ -22,6 +22,16 @@ class Emoji {
 	}
 
 	public function __construct() {
+		/*
+		 * It's been fun, but the ride is over.
+		 * You should use WordPress 4.2, instead.
+		 */
+		if ( current_user_can( 'activate_plugins' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			deactivate_plugins( plugin_basename( __FILE__ ) );
+		}
+		return;
+
 		/**
 		 * Filter the URL where emoji images are hosted.
 		 *

@@ -9,6 +9,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 If only there was a consistent emoji experience for WordPress. That would be 😎👍.
 
+*This was an experimental plugin to develop Emoji support in WordPress. It has been superceded by WordPress 4.2, and no longer works.*
+
 == Contributing ==
 
 Development of this plugin is done on [Github](https://github.com/pento/x1f4a9). Pull requests are welcome.
